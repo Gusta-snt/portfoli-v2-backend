@@ -1,7 +1,14 @@
-import pymongo
+# Database stuff
 from pymongo import MongoClient
-from flask import Flask, jsonify
-from bson.json_util import dumps, loads
+
+# API stuff
+from flask import Flask
+
+# Encoding stuff
+from bson.json_util import default
+import json
+
+# Enviroment variables stuff
 from dotenv import load_dotenv
 import os
 
@@ -10,11 +17,16 @@ app = Flask(__name__)
 cluster = MongoClient(os.environ["MONGO_LINK"])
 
 db = cluster["db"]
-collection = db.get_collection("projects")
+collection_projects = db.get_collection("projects")
+collection_skills = db.get_collection("skills")
 
-@app.route('/')
-def hello():
-    documents = collection.find()
-    list_cur = list(documents)
-    json_data = dumps(list_cur)
-    return jsonify(json_data)
+def cursor_to_json(cursor):
+    return json.dumps(list(cursor), default=default, indent=2)
+
+@app.route('/projects')
+def get_projects():
+    return cursor_to_json(collection_projects.find()), 200, {"Content-Type": "application/json"}
+
+@app.route('/skills')
+def get_skills():
+    return cursor_to_json(collection_skills.find()), 200, {"Content-Type": "application/json"}
