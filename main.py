@@ -12,6 +12,8 @@ import json
 from dotenv import load_dotenv
 import os
 
+from flask_cors import cross_origin
+
 load_dotenv()
 app = Flask(__name__)
 cluster = MongoClient(os.environ["MONGO_LINK"])
@@ -23,10 +25,12 @@ collection_skills = db.get_collection("skills")
 def cursor_to_json(cursor):
     return json.dumps(list(cursor), default=default, indent=2)
 
-@app.route('/projects')
+@app.route('/projects', methods=["GET"])
+@cross_origin()
 def get_projects():
     return cursor_to_json(collection_projects.find()), 200, {"Content-Type": "application/json"}
 
-@app.route('/skills')
+@app.route('/skills', methods=["GET"])
+@cross_origin()
 def get_skills():
     return cursor_to_json(collection_skills.find()), 200, {"Content-Type": "application/json"}
