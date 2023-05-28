@@ -2,7 +2,6 @@ argcomplete==3.0.8
 asgiref==3.6.0
 attrs==22.2.0
 blinker==1.6.2
-btrfsutil==6.3
 certifi==2022.12.7
 cffi==1.15.1
 chardet==5.1.0
