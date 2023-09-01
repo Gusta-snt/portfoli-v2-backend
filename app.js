@@ -70,10 +70,11 @@ app.get("/skills", async (req, res) => {
 
 mongoose.connect(db_url)
     .then( () => {
-        app.listen(PORT, () => {
-            console.log(`Server online on port: ${PORT}`);
-        })
+        console.log("Connected to database.");
     })
     .catch ( err => {
         console.error(err);
     })
+app.listen(PORT, () => {
+    console.log(`Server online on port: ${PORT}`);
+})
